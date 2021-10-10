@@ -39,16 +39,17 @@ var draw = function(disk, counter){
 
     // check if mouse is clicked using state.push
     // this if statement check if any ball is within the rectangle
-    if(
-        state.pushed && 
-        disk.xpos < (state.x + 100) && 
-        disk.xpos > (state.x - 100) &&
-        disk.ypos < (state.y + 50) &&
-        disk.ypos > (state.y - 50)
-    ) {
-        disk.attr({
-            'fill': 'white'
-        })
+    let distance = eucladianDist(disk.xpos, disk.ypos, state.x, state.y)
+    if(state.pushed ) {
+        if (distance < 100) {
+            disk.attr({
+                'fill': 'white'
+            })
+        } else {
+            disk.attr({
+                "fill": colors[counter]
+            }) 
+        }
     } else {
         disk.attr({
             "fill": colors[counter]
@@ -102,11 +103,15 @@ setInterval(function() {
 
 // for your subsequent parts
 // create state as per step 5
-var state = {
+let state = {
     pushed: false,
     x: 0,
     y: 0
 }
+
+let eucladianDist = function(x1, y1, x2, y2) {
+    return ((x1-x2)**2 + (y1-y2)**2)**0.5
+}   
 
 // create a rectangle so that we have an area of effect
 // i set to a 200x100 rectangle
@@ -114,32 +119,43 @@ var rect = paper.rect(0, 0, 200, 100)
 
 
 // on mouse down, do all this shit
-bgRect.mousedown(function(e) {
-    // update your state
+// bgRect.mousedown(function(e) {
+//     // update your state
+//     state.x = e.offsetX
+//     state.y = e.offsetY
+//     state.pushed = true
+
+//     rect.attr({
+//         stroke:'red',"stroke-width":5, // remove this line after u familiar with it
+//         opacity:0.5,
+//         x: e.offsetX - 100,
+//         y: e.offsetY - 50
+//     }); 
+
+// });
+
+bgRect.node.addEventListener("mousedown", function(e){
     state.x = e.offsetX
     state.y = e.offsetY
     state.pushed = true
+})
 
-    rect.attr({
-        stroke:'red',"stroke-width":5, // remove this line after u familiar with it
-        opacity:0.5,
-        x: e.offsetX - 100,
-        y: e.offsetY - 50
-    }); 
 
-});
+bgRect.node.addEventListener("mouseup", function(e) {
+    state.pushed = false    
+})
 
 // on mouse up do all these shit
-bgRect.mouseup(function(e) {
-    // update your state
-    state.x = 0
-    state.y = 0
-    state.pushed = false
+// bgRect.mouseup(function(e) {
+//     // update your state
+//     state.x = 0
+//     state.y = 0
+//     state.pushed = false
     
-    rect.attr({
-        stroke:'blue',"stroke-width":5,
-        opacity:0,
-        x: e.offsetX,
-        y: e.offsetY
-    })
-});
+//     rect.attr({
+//         stroke:'blue',"stroke-width":5,
+//         opacity:0,
+//         x: e.offsetX,
+//         y: e.offsetY
+//     })
+// });

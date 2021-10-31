@@ -21,11 +21,11 @@ for(i=0; i<5; i++) {
 
 boxArray = [];
 for(i=0; i<5; i++) {
-    boxArray.push([
+    boxArray.push(
         paper.rect((dimX/6*(i+1))-50, (dimY/8)*6, cardWidth, cardHeight, 10).attr({
             "fill" : "white",
         })
-    , null])
+    )
 }
 
 /** End of Declaring Items */
@@ -57,14 +57,13 @@ let cardActions = function(card) {
 
 
 let enterExitBox = function(card, move) {    
-    let color = card.attrs.fill
-    if (card.attrs.y > 550 && card.attrs.x < 250 && color === "red") {
-        boxArray[0][1] = card;
+    console.log('current x: ' + card.attrs.x)
+    if (card.attrs.y > 550 && card.attrs.x < 250) {
         card.attr({
             x: 117,
             y: 601.5
         })
-        boxArray[0][0].hide()
+        boxArray[0].hide()
     } 
 
     // u need to find it a way to detect if its entering or exiting box, use the same card and make box disapear

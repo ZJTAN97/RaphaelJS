@@ -51,22 +51,20 @@ let cardActions = function(card) {
                 "y" : move.offsetY - (cardHeight/2), //to ensure that the movement corresponds to the centre of rect rather than the top left corner
             })
         }
-         enterExitBox(card, move)
+        allocated = enterBox(card)
     })
 }
 
 
-let enterExitBox = function(card, move) {    
-    console.log('current x: ' + card.attrs.x)
-    if (card.attrs.y > 550 && card.attrs.x < 250) {
+let enterBox = function(card) {    
+    if (card.attrs.y <= 601 + 70 && card.attrs.y >= 601 - 70 && card.attrs.x >= 117 - 70 && card.attrs.x <= 117+ 70) {
         card.attr({
             x: 117,
             y: 601.5
         })
         boxArray[0].hide()
+        return true;
     } 
-
-    // u need to find it a way to detect if its entering or exiting box, use the same card and make box disapear
 }
 
 

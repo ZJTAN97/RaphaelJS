@@ -62,6 +62,7 @@ for(i=0; i<5; i++) {
         "fill" : "white",
     })
     box.allocated = false
+    box.value = -1 // means no value
     boxArray.push(box)
 }
 
@@ -78,13 +79,23 @@ let cardMove = function(card){
     card.state = 0;
 
     card.node.addEventListener('mousedown', function(){
-        console.log("mousedown on card")
         card.state = 1;
     })
 
     card.node.addEventListener('mouseup', function(){
-        console.log("mouseup on card")
         card.state = 0;
+        console.log(boxArray.map(box => box.value))
+        boxValues = boxArray.map(item => parseInt(item.value))
+        console.log(boxValues)
+        if(boxValues.includes(-1)) {
+            console.log('not completed')
+        } else {
+            console.log('-- result --')
+            console.log(sorted(boxValues))
+            window.location.reload()
+        }
+
+
     })
 
     card.node.addEventListener('mousemove', function(move){
@@ -138,6 +149,7 @@ let enterBox = function(card){
             card.text.attr({"x" : boxArray[0].attrs.x + cardWidth/2, "y" : boxArray[0].attrs.y + cardHeight/2})
             boxArray[0].hide();
             boxArray[0].allocated = true
+            boxArray[0].value = card.text.attrs.text
             return true;
         }
 
@@ -149,6 +161,7 @@ let enterBox = function(card){
             card.text.attr({"x" : boxArray[1].attrs.x + cardWidth/2, "y" : boxArray[1].attrs.y + cardHeight/2})
             boxArray[1].hide();
             boxArray[1].allocated = true
+            boxArray[1].value = card.text.attrs.text
             return true;
         }
 
@@ -160,6 +173,7 @@ let enterBox = function(card){
             card.text.attr({"x" : boxArray[2].attrs.x + cardWidth/2, "y" : boxArray[2].attrs.y + cardHeight/2})
             boxArray[2].hide();
             boxArray[2].allocated = true
+            boxArray[2].value = card.text.attrs.text
             return true;
         }
 
@@ -172,6 +186,7 @@ let enterBox = function(card){
             card.text.attr({"x" : boxArray[3].attrs.x + cardWidth/2, "y" : boxArray[3].attrs.y + cardHeight/2})
             boxArray[3].hide();
             boxArray[3].allocated = true
+            boxArray[3].value = card.text.attrs.text
             return true;
         }
 
@@ -184,11 +199,10 @@ let enterBox = function(card){
             card.text.attr({"x" : boxArray[4].attrs.x + cardWidth/2, "y" : boxArray[4].attrs.y + cardHeight/2})
             boxArray[4].hide();
             boxArray[4].allocated = true
+            boxArray[4].value = card.text.attrs.text
             return true;
         }
-    
-    console.log('-- look here --')
-    console.log(boxArray.map(item => item.allocated))
+
          
     return false;
 
@@ -203,30 +217,35 @@ let exitBox = function(card){
         card.attrs.x <= boxArray[0].attrs.x + boundary || card.attrs.x + cardWidth >= boxArray[0].attrs.x + boundary) {
             boxArray[0].show()
             boxArray[0].allocated = false
+            boxArray[0].value = -1
         }
 
     if (card.attrs.y >= boxArray[1].attrs.y + boundary || card.attrs.y + cardHeight >= boxArray[1].attrs.y + cardHeight + boundary &&
         card.attrs.x <= boxArray[1].attrs.x + boundary || card.attrs.x + cardWidth >= boxArray[1].attrs.x + boundary) {
             boxArray[1].show()
             boxArray[1].allocated = false
+            boxArray[1].value = -1
         }
 
    if (card.attrs.y >= boxArray[2].attrs.y + boundary || card.attrs.y + cardHeight >= boxArray[2].attrs.y + cardHeight + boundary &&
         card.attrs.x <= boxArray[2].attrs.x + boundary || card.attrs.x + cardWidth >= boxArray[2].attrs.x + boundary) {
             boxArray[2].show()
             boxArray[2].allocated = false
+            boxArray[2].value = -1
         }
 
    if (card.attrs.y >= boxArray[3].attrs.y + boundary || card.attrs.y + cardHeight >= boxArray[3].attrs.y + cardHeight + boundary &&
         card.attrs.x <= boxArray[3].attrs.x + boundary || card.attrs.x + cardWidth >= boxArray[3].attrs.x + boundary) {
             boxArray[3].show()
             boxArray[3].allocated = false
+            boxArray[3].value = -1
         }
 
    if (card.attrs.y >= boxArray[4].attrs.y + boundary || card.attrs.y + cardHeight >= boxArray[4].attrs.y + cardHeight + boundary &&
         card.attrs.x <= boxArray[4].attrs.x + boundary || card.attrs.x + cardWidth >= boxArray[4].attrs.x + boundary) {
             boxArray[4].show()
             boxArray[4].allocated = false
+            boxArray[4].value = -1
         }
 
 }
@@ -236,6 +255,15 @@ for(i=0; i<5; i++){
     cardMove(cardStack[i]);
 }
 
+
+function sorted(arr){
+    let second_index;
+	for(let first_index = 0; first_index < arr.length; first_index++){
+  	  second_index = first_index + 1;
+      if(arr[second_index] - arr[first_index] < 0) return false;
+    }
+    return true;
+}
 
 //---------------------------------------------------------------------------------------------
 
@@ -263,17 +291,3 @@ for(i=0; i<5; i++){
 
 // let startButton = document.getElementById("startbutton")
 // startButton.addEventListener('click', start)
-
-
-
-
-
-
-
-
-
-
-
-
-
-

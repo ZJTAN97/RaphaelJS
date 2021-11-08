@@ -1,7 +1,3 @@
-
-console.log("yo, I'm alive!");
-
-
 let username = prompt("Please enter your name");
 document.getElementById("username").innerHTML = "Hi! " + username;
 
@@ -106,29 +102,15 @@ let cardMove = function(card){
                 card.allocated = true;
                 card.state = 0;
             }
+            
         }
 
 
-        // if (card.allocated = true ) { //if card allocated is true, STOP ENTERBOX FROM HAPPENING --> HOW SIA? 
-        //     !enterBox(card)
-        // }
-
-
         if (card.state === 1 && card.allocated) { //if there is card in box, card can exit
-            console.log("dragging from allocated card")
-            card.attr({
-                "x" : move.offsetX - (cardWidth*3/4), 
-                "y" : move.offsetY - (cardHeight*3/4)
-            })
-            card.text.attr({
-                "x" : card.attrs.x + (cardWidth/2),
-                "y" : card.attrs.y + (cardHeight/2),
-            })
-            exitBox(card)               //CARD IS CURRENTLY NOT EXITING, NEED TO FIGURE OUT WHY
-            console.log("is this working")
-            console.log(card.state)
             card.allocated = false
+            exitBox(card)        
         }  
+
     })
 
     bg.node.addEventListener('mousemove', function(move){
@@ -155,6 +137,7 @@ let enterBox = function(card){
             card.attr({"x" : boxArray[0].attrs.x, "y" : boxArray[0].attrs.y,})
             card.text.attr({"x" : boxArray[0].attrs.x + cardWidth/2, "y" : boxArray[0].attrs.y + cardHeight/2})
             boxArray[0].hide();
+            boxArray[0].allocated = true
             return true;
         }
 
@@ -165,6 +148,7 @@ let enterBox = function(card){
             card.attr({"x" : boxArray[1].attrs.x, "y" : boxArray[1].attrs.y,})
             card.text.attr({"x" : boxArray[1].attrs.x + cardWidth/2, "y" : boxArray[1].attrs.y + cardHeight/2})
             boxArray[1].hide();
+            boxArray[1].allocated = true
             return true;
         }
 
@@ -175,6 +159,7 @@ let enterBox = function(card){
             card.attr({"x" : boxArray[2].attrs.x, "y" : boxArray[2].attrs.y,})
             card.text.attr({"x" : boxArray[2].attrs.x + cardWidth/2, "y" : boxArray[2].attrs.y + cardHeight/2})
             boxArray[2].hide();
+            boxArray[2].allocated = true
             return true;
         }
 
@@ -186,6 +171,7 @@ let enterBox = function(card){
             card.attr({"x" : boxArray[3].attrs.x, "y" : boxArray[3].attrs.y,})
             card.text.attr({"x" : boxArray[3].attrs.x + cardWidth/2, "y" : boxArray[3].attrs.y + cardHeight/2})
             boxArray[3].hide();
+            boxArray[3].allocated = true
             return true;
         }
 
@@ -197,8 +183,12 @@ let enterBox = function(card){
             card.attr({"x" : boxArray[4].attrs.x, "y" : boxArray[4].attrs.y,})
             card.text.attr({"x" : boxArray[4].attrs.x + cardWidth/2, "y" : boxArray[4].attrs.y + cardHeight/2})
             boxArray[4].hide();
+            boxArray[4].allocated = true
             return true;
         }
+    
+    console.log('-- look here --')
+    console.log(boxArray.map(item => item.allocated))
          
     return false;
 
@@ -206,8 +196,8 @@ let enterBox = function(card){
 
 
 let exitBox = function(card){
-    let boundary = 10;
 
+    let boundary = 10;
 
     if (card.attrs.y >= boxArray[0].attrs.y + boundary || card.attrs.y + cardHeight >= boxArray[0].attrs.y + cardHeight + boundary &&
         card.attrs.x <= boxArray[0].attrs.x + boundary || card.attrs.x + cardWidth >= boxArray[0].attrs.x + boundary) {
@@ -271,8 +261,8 @@ for(i=0; i<5; i++){
 
 // }
 
-let startButton = document.getElementById("startbutton")
-startButton.addEventListener('click', start)
+// let startButton = document.getElementById("startbutton")
+// startButton.addEventListener('click', start)
 
 
 

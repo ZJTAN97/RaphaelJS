@@ -3,9 +3,8 @@ body {
 }
 
 .username { grid-area: username; }
-.difficulty { grid-area: difficulty; }
+.startbutton { grid-area: startbutton; }
 .timer { grid-area: timer; }
-.share { grid-area: share; }
 .game { grid-area: game; }
 
 .grid-container {
@@ -13,19 +12,21 @@ body {
   grid-template-areas:
     'username game game game game'
     'username game game game game'
-    'difficulty game game game game'
-    'difficulty game game game game'
+    'startbutton game game game game'
+    'startbutton game game game game'
+    'startbutton game game game game'
     'timer game game game game'
     'timer game game game game'
-    'share game game game game'
-    'share game game game game';    
+    'timer game game game game';    
   grid-gap: 10px;
-  background-color: #2196F3;
+  background-color: peachpuff;
   padding: 10px;
+  font-family: 'Marker Felt', fantasy;
+  font-size: 5px;
 }
 
 .grid-container > div {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: floralwhite;
   text-align: center;
   padding: 20px 0;
   font-size: 30px;
@@ -38,3 +39,30 @@ body {
   margin: auto;
   background-color: white;
 }
+
+.welcomeimage {
+  width: 10vw;
+}
+
+.startbutton {
+  background: url("startbutton.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+.timerimage {
+  width: 5vw;
+}
+
+
+
+
+
+
+
+
+
+
+

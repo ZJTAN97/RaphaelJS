@@ -42,6 +42,7 @@ let resetGameBoard = function() {
         })
         card.text.attr({
             "font-size" : 15,
+            "-webkit-user-select": "none",
             "cursor": "pointer",
             "width": "100px",
             "background-color": "black",
@@ -108,8 +109,7 @@ let cardMove = function(card){
 
 
         if (card.state === 1 && card.allocated) { //if there is card in box, card can exit
-            card.allocated = true
-            console.log(card)
+            card.allocated = false
             exitBox(card)        
         }  
 
@@ -281,11 +281,6 @@ let start = function(){
     }
 
 }
-
-
-// for(i=0; i<5; i++){
-//     cardMove(cardStack[i]);
-// }
 
 let startButton = document.getElementById("startbutton")
 startButton.addEventListener('click', start)

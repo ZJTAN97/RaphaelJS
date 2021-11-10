@@ -5,6 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="css/appstyle.css">
+        <link rel="stylesheet" type="text/css" href="css/modal.css">
         <script type="text/javascript" src="jslibs/raphael.js"></script>
         <script defer type="text/javascript"  src="appscripts/main.js"></script>
         <title>Drag and Drop</title>
@@ -13,7 +14,6 @@
     <body>
 
         <div class="grid-container">
-
           <div class="username">
             <!-- <div>Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
             <div class="welcomeimg"><img class="welcomeimage" src="css/welcome.png"></div>
@@ -46,3 +46,20 @@
           </div>
           
         </div>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-text" class="modal-text">
+              <!--Text will be dependent on whether array is sorted-->
+            </div>
+            <button id="restart-btn">Restart</button>
+          </div>
+
+        </div>
+
+
+    </body>
+

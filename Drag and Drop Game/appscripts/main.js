@@ -13,62 +13,57 @@ let bg = paper.rect(0,0, dimX, dimY).attr({
     "stroke" : "grey",
 })
 
-
-//------------------------------------------------------------------------------------------------
-
-
-let randInt = function(m, n){
-    let range = n-m+1;
-    let frand = Math.random()*range;
-    return m+Math.floor(frand);
-}
-console.log(randInt(0, 100));
-
-
-//--------------------------------------------------------------------------------------------
-
-
 var cardWidth = 100;
 var cardHeight = 75;
 
-// putting the cards in an array
-cardStack = [];
-colors = ["lightcoral", "lightsalmon", "lightyellow", "lightgreen", "lightblue"]
 
-//using for loop because i already know i want 5 cards
-for(i=0; i<5; i++) {
-    let card = paper.rect((dimX/6*(i+1))-50, dimY/8, cardWidth, cardHeight, 10);
-    let text = paper.text(((dimX/6*(i+1))-50 + cardWidth/2), (dimY/8 + cardHeight/2), randInt(0,100))
-    card.text = text 
-    card.attr({
-        "fill" : colors[i],
-    })
-    card.text.attr({
-        "font-size" : 30,
-    })
-    card.allocated = false
-    cardStack.push(card)
+let resetGameBoard = function() {
+        
+    let randInt = function(m, n){
+        let range = n-m+1;
+        let frand = Math.random()*range;
+        return m+Math.floor(frand);
+    }
+    
+    // putting the cards in an array
+    cardStack = [];
+    colors = ["lightcoral", "lightsalmon", "lightyellow", "lightgreen", "lightblue"]
+    
+    //using for loop because i already know i want 5 cards
+    for(i=0; i<5; i++) {
+        let card = paper.rect((dimX/6*(i+1))-50, dimY/8, cardWidth, cardHeight, 10);
+        let text = paper.text(((dimX/6*(i+1))-50 + cardWidth/2), (dimY/8 + cardHeight/2), randInt(0,100))
+        card.text = text 
+        card.attr({
+            "fill" : colors[i],
+        })
+        card.text.attr({
+            "font-size" : 30,
+        })
+        card.allocated = false
+        cardStack.push(card)
+    }
+    
+    
+    //putting the boxes in an array
+    boxArray = [];
+    
+    //using for loop because i already know i want 5 boxes
+    for(i=0; i<5; i++) {
+        let box = paper.rect((dimX/6*(i+1))-50, (dimY/8)*6, cardWidth, cardHeight, 10);
+        box.attr({
+            "fill" : "white",
+        })
+        box.allocated = false
+        box.value = -1 // means no value
+        boxArray.push(box)
+    }
+    paper.text(boxArray[0].attrs.x + 50, boxArray[0].attrs.y + 110, "Smallest").attr({"font-size" : 20})
+    paper.text(boxArray[4].attrs.x + 50, boxArray[0].attrs.y + 110, "Biggest").attr({"font-size" : 20})
 }
 
+resetGameBoard()
 
-
-//putting the boxes in an array
-boxArray = [];
-
-//using for loop because i already know i want 5 boxes
-for(i=0; i<5; i++) {
-    let box = paper.rect((dimX/6*(i+1))-50, (dimY/8)*6, cardWidth, cardHeight, 10);
-    box.attr({
-        "fill" : "white",
-    })
-    box.allocated = false
-    box.value = -1 // means no value
-    boxArray.push(box)
-}
-
-
-let smallText = paper.text(boxArray[0].attrs.x + 50, boxArray[0].attrs.y + 110, "Smallest").attr({"font-size" : 20})
-let bigText = paper.text(boxArray[4].attrs.x + 50, boxArray[0].attrs.y + 110, "Biggest").attr({"font-size" : 20})
 
 
 //-------------------------------------------------------------------------------------------------
@@ -84,18 +79,6 @@ let cardMove = function(card){
 
     card.node.addEventListener('mouseup', function(){
         card.state = 0;
-        console.log(boxArray.map(box => box.value))
-        boxValues = boxArray.map(item => parseInt(item.value))
-        console.log(boxValues)
-        if(boxValues.includes(-1)) {
-            console.log('not completed')
-        } else {
-            console.log('-- result --')
-            console.log(sorted(boxValues))
-            window.location.reload()
-        }
-
-
     })
 
     card.node.addEventListener('mousemove', function(move){
@@ -112,6 +95,7 @@ let cardMove = function(card){
             if (enterBox(card)) { //after card enters box
                 card.allocated = true;
                 card.state = 0;
+                checkCompleteGame()
             }
             
         }
@@ -251,11 +235,6 @@ let exitBox = function(card){
 }
 
 
-for(i=0; i<5; i++){
-    cardMove(cardStack[i]);
-}
-
-
 function sorted(arr){
     let second_index;
 	for(let first_index = 0; first_index < arr.length; first_index++){
@@ -268,26 +247,59 @@ function sorted(arr){
 //---------------------------------------------------------------------------------------------
 
 
-// let start = function(){
-//     console.log("Game is starting.");
+let start = function(){
+    console.log("Game is starting.");
 
-//     var timeleft = 20;
-//     var gameTime = setInterval(function(){
-//         if(timeleft < 0){
-//             clearInterval(gameTime);
-//             document.getElementById("countdown").innerHTML = "Time";
-//             alert("Time is up!")
-//         } else {
-//             document.getElementById("countdown").innerHTML = timeleft + " seconds remaining";
-//         }
-//         timeleft -= 1;
-//     }, 1000);
+    let timeleft = 20;
+    boxValues = boxArray.map(item => parseInt(item.value))
 
-//     for(i=0; i<5; i++){
-//         cardMove(cardStack[i]);
-//     }
+    let gameTime = setInterval(function(){
+        timeleft -= 1;
+        if(timeleft < 0){
+            clearInterval(gameTime);
+            document.getElementById("countdown").innerHTML = "Time";
+            alert("Time is up!")
+        } else {
+            document.getElementById("countdown").innerHTML = timeleft + " seconds remaining";
+            boxValues = boxArray.map(item => parseInt(item.value))
+        }
+    }, 1000);
 
-// }
+    for(i=0; i<5; i++){
+        cardMove(cardStack[i]);
+    }
 
-// let startButton = document.getElementById("startbutton")
-// startButton.addEventListener('click', start)
+}
+
+let startButton = document.getElementById("startbutton")
+startButton.addEventListener('click', start)
+
+
+// Modal Stuffs
+modal = document.getElementById("myModal");
+modalText = document.getElementById("modal-text");
+closeModalBtn = document.getElementsByClassName("close")[0];
+closeModalBtn.onclick = function() {
+    modal.style.display = "none"
+}
+
+let checkCompleteGame = function() {
+    boxValues = boxArray.map(item => parseInt(item.value))
+    if(boxValues.includes(-1)) {
+        //
+    } else {
+        console.log('--result--')
+        modal.style.display = "block"
+        if(sorted(boxValues)) modalText.innerHTML = "Congrats! You have sorted correctly!"
+        else modalText.innerHTML = "Order is wrongly sorted. Please try again!"
+    }
+}
+
+
+// restart function
+restartBtn = document.getElementById('restart-btn')
+restartBtn.addEventListener('click', function() {
+    console.log(' i want to restart the game please. ')
+    resetGameBoard()
+    modal.style.display = 'none'
+})

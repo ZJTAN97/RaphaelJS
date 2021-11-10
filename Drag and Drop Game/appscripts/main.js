@@ -295,4 +295,5 @@ let exitBox = function(card) {
         
         boxArray[allocatedBox].allocated = false
         boxArray[allocatedBox].show()   
+        boxArray[allocatedBox].value = -1
 }

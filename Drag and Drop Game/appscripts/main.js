@@ -48,6 +48,7 @@ let resetGameBoard = function() {
             "background-color": "black",
         })
         card.allocated = false
+        card.index = i
         cardStack.push(card)
     }
     
@@ -82,6 +83,12 @@ let cardMove = function(card){
 
     card.node.addEventListener('mousedown', function(){
         card.state = 1;
+
+        console.log(card.allocated)
+        if(card.allocated) {
+            exitBox(card)
+        }
+
     })
 
     card.node.addEventListener('mouseup', function(){
@@ -106,12 +113,6 @@ let cardMove = function(card){
             }
             
         }
-
-
-        if (card.state === 1 && card.allocated) { //if there is card in box, card can exit
-            card.allocated = false
-            exitBox(card)        
-        }  
 
     })
 
@@ -200,48 +201,6 @@ let enterBox = function(card){
 }
 
 
-let exitBox = function(card){
-
-    let boundary = 10;
-
-    if (card.attrs.y >= boxArray[0].attrs.y + boundary || card.attrs.y + cardHeight >= boxArray[0].attrs.y + cardHeight + boundary &&
-        card.attrs.x <= boxArray[0].attrs.x + boundary || card.attrs.x + cardWidth >= boxArray[0].attrs.x + boundary) {
-            boxArray[0].show()
-            boxArray[0].allocated = false
-            boxArray[0].value = -1
-        }
-
-    if (card.attrs.y >= boxArray[1].attrs.y + boundary || card.attrs.y + cardHeight >= boxArray[1].attrs.y + cardHeight + boundary &&
-        card.attrs.x <= boxArray[1].attrs.x + boundary || card.attrs.x + cardWidth >= boxArray[1].attrs.x + boundary) {
-            boxArray[1].show()
-            boxArray[1].allocated = false
-            boxArray[1].value = -1
-        }
-
-   if (card.attrs.y >= boxArray[2].attrs.y + boundary || card.attrs.y + cardHeight >= boxArray[2].attrs.y + cardHeight + boundary &&
-        card.attrs.x <= boxArray[2].attrs.x + boundary || card.attrs.x + cardWidth >= boxArray[2].attrs.x + boundary) {
-            boxArray[2].show()
-            boxArray[2].allocated = false
-            boxArray[2].value = -1
-        }
-
-   if (card.attrs.y >= boxArray[3].attrs.y + boundary || card.attrs.y + cardHeight >= boxArray[3].attrs.y + cardHeight + boundary &&
-        card.attrs.x <= boxArray[3].attrs.x + boundary || card.attrs.x + cardWidth >= boxArray[3].attrs.x + boundary) {
-            boxArray[3].show()
-            boxArray[3].allocated = false
-            boxArray[3].value = -1
-        }
-
-   if (card.attrs.y >= boxArray[4].attrs.y + boundary || card.attrs.y + cardHeight >= boxArray[4].attrs.y + cardHeight + boundary &&
-        card.attrs.x <= boxArray[4].attrs.x + boundary || card.attrs.x + cardWidth >= boxArray[4].attrs.x + boundary) {
-            boxArray[4].show()
-            boxArray[4].allocated = false
-            boxArray[4].value = -1
-        }
-
-}
-
-
 function sorted(arr){
     let second_index;
 	for(let first_index = 0; first_index < arr.length; first_index++){
@@ -289,10 +248,7 @@ startButton.addEventListener('click', start)
 // Modal Stuffs
 modal = document.getElementById("myModal");
 modalText = document.getElementById("modal-text");
-closeModalBtn = document.getElementsByClassName("close")[0];
-closeModalBtn.onclick = function() {
-    modal.style.display = "none"
-}
+
 
 let checkCompleteGame = function() {
     boxValues = boxArray.map(item => parseInt(item.value))
@@ -317,3 +273,26 @@ restartBtn.addEventListener('click', function() {
     modal.style.display = 'none'
     document.getElementById("countdown").innerHTML = "";
 })
+
+
+
+
+// testing new exit function
+let exitBox = function(card) {
+
+        card.allocated = false
+        card.state = 0
+        allocatedBox = boxValues.indexOf(parseInt(card.text.attrs.text))
+
+        card.attr({
+            "x": (dimX/6*(card.index+1)) - 50,
+            "y": dimY/8,
+        })
+        card.text.attr({
+            "x": ((dimX/6*(card.index+1))-50 + cardWidth/2),
+            "y": (dimY/8 + cardHeight/2)
+        })
+        
+        boxArray[allocatedBox].allocated = false
+        boxArray[allocatedBox].show()   
+}

@@ -18,6 +18,7 @@ var cardHeight = 75;
 
 
 let resetGameBoard = function() {
+
         
     let randInt = function(m, n){
         let range = n-m+1;
@@ -31,14 +32,20 @@ let resetGameBoard = function() {
     
     //using for loop because i already know i want 5 cards
     for(i=0; i<5; i++) {
+
         let card = paper.rect((dimX/6*(i+1))-50, dimY/8, cardWidth, cardHeight, 10);
         let text = paper.text(((dimX/6*(i+1))-50 + cardWidth/2), (dimY/8 + cardHeight/2), randInt(0,100))
         card.text = text 
         card.attr({
             "fill" : colors[i],
+            "cursor": "pointer",
         })
         card.text.attr({
-            "font-size" : 30,
+            "font-size" : 15,
+            "-webkit-user-select": "none",
+            "cursor": "pointer",
+            "width": "100px",
+            "background-color": "black",
         })
         card.allocated = false
         cardStack.push(card)
@@ -248,17 +255,21 @@ function sorted(arr){
 
 
 let start = function(){
-    console.log("Game is starting.");
-
     let timeleft = 20;
     boxValues = boxArray.map(item => parseInt(item.value))
 
     let gameTime = setInterval(function(){
         timeleft -= 1;
-        if(timeleft < 0){
+
+        if(!boxValues.includes(-1)) {
+            // if all boxes filled up
             clearInterval(gameTime);
+        }
+        if(timeleft === 0){
             document.getElementById("countdown").innerHTML = "Time";
-            alert("Time is up!")
+            modalText.innerHTML = "Your time is up!"
+            modal.style.display = "block";
+            clearInterval(gameTime);
         } else {
             document.getElementById("countdown").innerHTML = timeleft + " seconds remaining";
             boxValues = boxArray.map(item => parseInt(item.value))
@@ -288,7 +299,6 @@ let checkCompleteGame = function() {
     if(boxValues.includes(-1)) {
         //
     } else {
-        console.log('--result--')
         modal.style.display = "block"
         if(sorted(boxValues)) modalText.innerHTML = "Congrats! You have sorted correctly!"
         else modalText.innerHTML = "Order is wrongly sorted. Please try again!"
@@ -299,7 +309,11 @@ let checkCompleteGame = function() {
 // restart function
 restartBtn = document.getElementById('restart-btn')
 restartBtn.addEventListener('click', function() {
-    console.log(' i want to restart the game please. ')
+    for(i=0; i < cardStack.length; i++ ) {
+        cardStack[i].text.remove()
+        cardStack[i].remove()
+    }
     resetGameBoard()
     modal.style.display = 'none'
+    document.getElementById("countdown").innerHTML = "";
 })
